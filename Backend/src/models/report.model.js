@@ -57,52 +57,58 @@ const skillGapSchema = new mongoose.Schema(
   },
 );
 
-
 const preparationPlanSchema = new mongoose.Schema(
   {
     day: {
-        type: Number,
-        required: [true, "Day is required"],
+      type: Number,
+      required: [true, "Day is required"],
     },
     focus: {
-        type: String,
-        required: [true, "Focus is required"],
+      type: String,
+      required: [true, "Focus is required"],
     },
-    tasks: [{
+    tasks: [
+      {
         type: String,
         required: [true, "Tasks are required"],
-    }],
+      },
+    ],
   },
   {
     _id: false,
   },
 );
 
-
-const reportSchema = new mongoose.Schema({
-  jobDescription: {
-    type: String,
-    required: [true, "Job description is required"],
-  },
-  resume: {
-    type: String,
-  },
-  selfDescription: {
-    type: String,
-  },
-  matchScore: {
-    type: Number,
-    min: 0,
-    max: 100,
-  },
+const reportSchema = new mongoose.Schema(
+  {
+    jobDescription: {
+      type: String,
+      required: [true, "Job description is required"],
+    },
+    resume: {
+      type: String,
+    },
+    selfDescription: {
+      type: String,
+    },
+    matchScore: {
+      type: Number,
+      min: 0,
+      max: 100,
+    },
     technicalQuestions: [technicalQuestionSchema],
     behavioralQuestions: [behavioralQuestionSchema],
     skillGaps: [skillGapSchema],
-    preparationPlan: [preparationPlanSchema],
-}, {
-  timestamps: true,
-});
-
+    preparationPlan : [preparationPlanSchema],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const Report = mongoose.model("Report", reportSchema);
 
