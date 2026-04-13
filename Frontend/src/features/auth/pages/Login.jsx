@@ -1,4 +1,4 @@
-import React,{useState } from "react";
+import {useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth.js";
 import "../auth.form.scss";
@@ -18,13 +18,9 @@ const Login = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="loader-container">
-        <div className="loader">Loading..........</div>
-      </div>
-    );
-  }
+  if(loading){
+        return (<main><h1>Loading.......</h1></main>)
+    }
 
   return (
     <main>

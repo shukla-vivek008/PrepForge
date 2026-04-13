@@ -96,14 +96,30 @@ const reportSchema = new mongoose.Schema(
       min: 0,
       max: 100,
     },
-    technicalQuestions: [technicalQuestionSchema],
-    behavioralQuestions: [behavioralQuestionSchema],
-    skillGaps: [skillGapSchema],
-    preparationPlan : [preparationPlanSchema],
+    technicalQuestions: {
+  type: [technicalQuestionSchema],
+  default: [],
+},
+behavioralQuestions: {
+  type: [behavioralQuestionSchema],
+  default: [],
+},
+skillGaps: {
+  type: [skillGapSchema],
+  default: [],
+},
+preparationPlan: {
+  type: [preparationPlanSchema],
+  default: [],
+},
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
+    title: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

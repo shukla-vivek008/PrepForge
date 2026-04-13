@@ -1,6 +1,35 @@
+import React, { useState, useRef } from "react";
 import "../style/home.scss";
+import { useInterview } from "../hooks/useInterview.js";
+import { useNavigate } from "react-router";
 
 const Home = () => {
+  const { loading, generateReport, reports } = useInterview();
+  const [jobDescription, setJobDescription] = useState("");
+  const [selfDescription, setSelfDescription] = useState("");
+  const resumeInputRef = useRef();
+
+  const navigate = useNavigate();
+
+  const handleGenerateReport = async () => {
+    const resumeFile = resumeInputRef.current.files[0];
+    const data = await generateReport({
+      jobDescription,
+      selfDescription,
+      resumeFile,
+    });
+    console.log("API RESPONSE:", data);
+    navigate(`/interview/${data._id}`);
+  };
+
+  if (loading) {
+    return (
+      <main className="loading-screen">
+        <h1>Loading your interview plan...</h1>
+      </main>
+    );
+  }
+
   return (
     <div className="home-page">
       {/* Page Header */}
@@ -81,7 +110,11 @@ const Home = () => {
                 Upload Resume
                 <span className="badge badge--best">Best Results</span>
               </label>
-              <label className="dropzone" htmlFor="resume">
+              <label
+                className="dropzone"
+                htmlFor="resume"
+                onClick={() => resumeInputRef.current.click()}
+              >
                 <span className="dropzone__icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -102,14 +135,18 @@ const Home = () => {
                 <p className="dropzone__title">
                   Click to upload or drag &amp; drop
                 </p>
-                <p className="dropzone__subtitle">PDF or DOCX (Max 5MB)</p>
+                <p className="dropzone__subtitle">PDF or DOCX (Max 3MB)</p>
                 <input
                   ref={resumeInputRef}
-                  hidden
+                  style={{ display: "none" }}
                   type="file"
                   id="resume"
                   name="resume"
                   accept=".pdf,.docx"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    console.log("Selected file:", file);
+                  }}
                 />
               </label>
             </div>
@@ -194,7 +231,7 @@ const Home = () => {
       </div>
 
       {/* Recent Reports List */}
-      {reports.length > 0 && (
+      {reports?.length > 0 && (
         <section className="recent-reports">
           <h2>My Recent Interview Plans</h2>
           <ul className="reports-list">
